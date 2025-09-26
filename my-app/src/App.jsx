@@ -3,6 +3,9 @@ import PodcastPreviewCard from "./components/PodcastPreviewCard";
 import Loading from "./components/Loading";
 import ErrorMessage from "./components/ErrorMessage";
 import DetailsModal from "./components/DetailsModal";
+import GenreFilter from "./utilities/GenreFilter";
+import Pagination from "./utilities/Pagination";
+import SortDropdown from "./utilities/SortDropdown";
 import SearchBar from "./components/SearchBar";
 import { genres } from "./genres/data.js";
 
@@ -11,7 +14,13 @@ export default function App() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [selected, setSelected] = useState(null);
+	
+	// utilities
 	const [searchTerm, setSearchTerm] = useState("");
+	const [selectedGenre, setSelectedGenre] = useState("");
+	const [sortOrder, setSortOrder] = useState("newest"); // newest | az | za
+	const [page, setPage] = useState(1);
+	const itemsPerPage = 12;
 
 	const API_URL = "https://podcast-api.netlify.app/";
 
@@ -75,12 +84,38 @@ export default function App() {
 	const onCardClick = useCallback((podcast) => setSelected(podcast), []);
 	const onCloseModal = useCallback(() => setSelected(null), []);
 
-	// Filter podcasts by title or genre
-	const filteredPodcasts = podcasts.filter(
-		(p) =>
-			p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			p.genres.some((g) => g.toLowerCase().includes(searchTerm.toLowerCase()))
-	);
+	// -----------------------------
+  // Filtering + Sorting + Pagination
+  // -----------------------------
+  const filteredPodcasts = podcasts.filter((p) => {
+    const matchesSearch =
+      p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.genres.some((g) => g.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesGenre =
+      selectedGenre === "" || p.genres.includes(selectedGenre);
+    return matchesSearch && matchesGenre;
+  });
+
+  const sortedPodcasts = [...filteredPodcasts].sort((a, b) => {
+    if (sortOrder === "newest") {
+      return new Date(b.updated) - new Date(a.updated);
+    }
+    if (sortOrder === "az") {
+      return a.title.localeCompare(b.title);
+    }
+    if (sortOrder === "za") {
+      return b.title.localeCompare(a.title);
+    }
+    return 0;
+  });
+
+  // Pagination
+  const totalPages = Math.ceil(sortedPodcasts.length / itemsPerPage);
+  const startIndex = (page - 1) * itemsPerPage;
+  const paginatedPodcasts = sortedPodcasts.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
 	return (
 		<main className="app-container">
