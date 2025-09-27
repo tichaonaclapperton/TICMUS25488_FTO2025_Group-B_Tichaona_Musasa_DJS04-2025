@@ -1,4 +1,4 @@
-import react from "react";
+import React from "react";
 import {genres} from "../genres/data.js";
 
 export default function GenreFilter({value, onChange}){
