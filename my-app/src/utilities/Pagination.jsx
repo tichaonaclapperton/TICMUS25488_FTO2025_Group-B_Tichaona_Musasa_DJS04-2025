@@ -1,4 +1,4 @@
-import react from "react";
+import React from "react";
 
 export default function Pagination({ page, totalPages, onPageChange }) {
 	if (totalPages <= 1) return null;
@@ -10,7 +10,10 @@ export default function Pagination({ page, totalPages, onPageChange }) {
 			<span>
 				Page {page}/{totalPages}
 			</span>
-			<button disabled={page === totalPages} onClick={() => onPageChange + 1}>
+			<button
+				disabled={page === totalPages}
+				onClick={() => onPageChange(page + 1)}
+			>
 				Next
 			</button>
 		</div>
