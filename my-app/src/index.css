@@ -211,6 +211,39 @@ body {
 	font-size: 12px;
 }
 
+/* Dropdowns (Sort + Genre) */
+select {
+	padding: 0.5rem;
+	border-radius: 6px;
+	border: 1px solid #ccc;
+	font-size: 0.9rem;
+	margin-left: 1.1rem;
+  }
+
+  /* Pagination */
+.pagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 1.5rem 0;
+	gap: 1rem;
+  }
+  
+  .pagination button {
+	padding: 0.5rem 1rem;
+	border-radius: 6px;
+	border: none;
+	background: #007bff;
+	color: white;
+	cursor: pointer;
+	font-size: 0.9rem;
+  }
+  
+  .pagination button:disabled {
+	background: #ccc;
+	cursor: not-allowed;
+  }
+
 
 
 /* Modal base */
