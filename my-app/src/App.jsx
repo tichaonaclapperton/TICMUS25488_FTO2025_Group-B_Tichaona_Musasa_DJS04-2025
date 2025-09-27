@@ -14,7 +14,7 @@ export default function App() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [selected, setSelected] = useState(null);
-	
+
 	// utilities
 	const [searchTerm, setSearchTerm] = useState("");
 	const [selectedGenre, setSelectedGenre] = useState("");
@@ -85,54 +85,61 @@ export default function App() {
 	const onCloseModal = useCallback(() => setSelected(null), []);
 
 	// -----------------------------
-  // Filtering + Sorting + Pagination
-  // -----------------------------
-  const filteredPodcasts = podcasts.filter((p) => {
-    const matchesSearch =
-      p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.genres.some((g) => g.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesGenre =
-      selectedGenre === "" || p.genres.includes(selectedGenre);
-    return matchesSearch && matchesGenre;
-  });
+	// Filtering + Sorting + Pagination
+	// -----------------------------
+	const filteredPodcasts = podcasts.filter((p) => {
+		const matchesSearch =
+			p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			p.genres.some((g) => g.toLowerCase().includes(searchTerm.toLowerCase()));
+		const matchesGenre =
+			selectedGenre === "" || p.genres.includes(selectedGenre);
+		return matchesSearch && matchesGenre;
+	});
 
-  const sortedPodcasts = [...filteredPodcasts].sort((a, b) => {
-    if (sortOrder === "newest") {
-      return new Date(b.updated) - new Date(a.updated);
-    }
-    if (sortOrder === "az") {
-      return a.title.localeCompare(b.title);
-    }
-    if (sortOrder === "za") {
-      return b.title.localeCompare(a.title);
-    }
-    return 0;
-  });
+	const sortedPodcasts = [...filteredPodcasts].sort((a, b) => {
+		if (sortOrder === "newest") {
+			return new Date(b.updated) - new Date(a.updated);
+		}
+		if (sortOrder === "az") {
+			return a.title.localeCompare(b.title);
+		}
+		if (sortOrder === "za") {
+			return b.title.localeCompare(a.title);
+		}
+		return 0;
+	});
 
-  // Pagination
-  const totalPages = Math.ceil(sortedPodcasts.length / itemsPerPage);
-  const startIndex = (page - 1) * itemsPerPage;
-  const paginatedPodcasts = sortedPodcasts.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
+	// Pagination
+	const totalPages = Math.ceil(sortedPodcasts.length / itemsPerPage);
+	const startIndex = (page - 1) * itemsPerPage;
+	const paginatedPodcasts = sortedPodcasts.slice(
+		startIndex,
+		startIndex + itemsPerPage
+	);
+
+	// Reset page when search/filter/sort changes
+	useEffect(() => {
+		setPage(1);
+	}, [searchTerm, selectedGenre, sortOrder]);
 
 	return (
 		<main className="app-container">
 			<header className="app-header">
 				<h1>Podcast App</h1>
 				<SearchBar value={searchTerm} onChange={setSearchTerm} />
+				<SortDropdown value={sortOrder} onChange={setSortOrder} />
+				<GenreFilter value={selectedGenre} onChange={setSelectedGenre} />
 			</header>
 
 			<section className="content">
 				{loading && <Loading message="Loading podcasts..." />}
 				{error && <ErrorMessage message={error} />}
-				{!loading && !error && filteredPodcasts.length === 0 && (
+				{!loading && !error && paginatedPodcasts.length === 0 && (
 					<div className="empty">No podcasts found.</div>
 				)}
-				{!loading && !error && filteredPodcasts.length > 0 && (
+				{!loading && !error && paginatedPodcasts.length > 0 && (
 					<div className="grid" role="list">
-						{filteredPodcasts.map((p) => (
+						{paginatedPodcasts.map((p) => (
 							<PodcastPreviewCard
 								key={p.id}
 								podcast={p}
@@ -142,6 +149,7 @@ export default function App() {
 					</div>
 				)}
 			</section>
+			<Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
 
 			{selected && <DetailsModal podcast={selected} onClose={onCloseModal} />}
 		</main>
