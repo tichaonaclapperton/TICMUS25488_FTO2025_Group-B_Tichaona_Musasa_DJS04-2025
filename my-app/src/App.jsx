@@ -127,8 +127,10 @@ export default function App() {
 			<header className="app-header">
 				<h1>Podcast App</h1>
 				<SearchBar value={searchTerm} onChange={setSearchTerm} />
-				<SortDropdown value={sortOrder} onChange={setSortOrder} />
-				<GenreFilter value={selectedGenre} onChange={setSelectedGenre} />
+				<div className="header-controls">
+					<SortDropdown value={sortOrder} onChange={setSortOrder} />
+					<GenreFilter value={selectedGenre} onChange={setSelectedGenre} />
+				</div>
 			</header>
 
 			<section className="content">
