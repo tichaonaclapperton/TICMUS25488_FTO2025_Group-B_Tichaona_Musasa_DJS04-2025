@@ -1,75 +1,102 @@
-# DJS03: React Podcast Landing Page
+# DSJ04 React Podcast App: Search, Sort, Filter, and Pagination
 
-## Overview
+## Project Overview
 
-In this project, you will build the landing page for a podcast discovery app using **React**. Your goal is to fetch podcast data from an external API and dynamically render a **responsive grid of podcast previews**. This project focuses on **data fetching**, **component structure**, **rendering logic**, and **layout styling**.
+In this project, I am building an advanced podcast browsing experience that allows users to dynamically **search**, **sort**, **filter**, and **paginate** a list of podcast shows. The goal is to create an intuitive interface that responds to user input in real time and maintains a consistent, seamless experience throughout navigation.
 
----
+This project will test the ability to manage complex UI state, synchronise multiple user interactions, and maintain clean, scalable code.
 
 ## Core Objectives
 
-- Fetch podcast data from an API: https://podcast-api.netlify.app/ on initial page load.
-- Display a loading indicator while data is being fetched, and handle errors or empty results with a clear user message.
-- Render a responsive **grid layout** of podcast previews using modular, reusable React components.
-- Pass podcast data into components via props and render each podcast card with the following:
-  - Podcast **image**
-  - Podcast **title**
-  - Number of **seasons**
-  - Associated **genre names**
-  - Formatted **last updated** date (e.g., "2 days ago")
-- Apply clean, consistent layout and styling across different screen sizes using CSS Grid or Flexbox.
-- Maintain high-quality, readable code with clear structure and **JSDoc comments** for key functions and components.
+### Search Functionality
+
+- Implement a flexible search that matches any part of the podcast title.
+- Results should update dynamically as the user types or upon submission.
+- Ensure that search results integrate with current filters, sorts, and pagination without resetting them.
+
+### Sorting Options
+
+- Allow sorting podcasts by:
+  - Newest first (based on last updated date).
+  - Title A–Z and Z–A.
+- Sorting must work in tandem with any search or filter criteria.
+
+### Filtering
+
+- Enable genre-based filtering using a dropdown or multi-select input.
+- Ensure filters work alongside current search, sort, and pagination state.
+- Maintain selected filters when navigating between pages or updating the list.
+
+### Pagination
+
+- Display podcasts in manageable chunks using pagination, load-more, or infinite scroll.
+- Ensure that pagination respects the currently active search, filter, and sort state.
+- Keep all UI selections intact while navigating pages.
+
+### State Synchronisation
+
+- Maintain a centralised and cleanly organised state using React state, context, or a state management library.
+- Ensure that all controls (search, sort, filter, pagination) reflect changes immediately and stay in sync.
+
+### Code Quality & Maintainability
+
+- Use JSDoc to document all major functions and modules.
+- Apply consistent formatting and naming conventions.
+- Keep logic modular and components reusable.
+
+### API Endpoints
+
+Data can be called via a `fetch` request to the following endpoint.
+
+| URL                               |                             |
+| --------------------------------- | --------------------------- |
+| `https://podcast-api.netlify.app` | Returns an array of PREVIEW |
+
+### Genre Titles
+
+Since the podcast preview information fetched from the API only exposes genres by their IDs, the actual genre details (such as titles) are not included in the API response. These details are instead provided in the data.js file found in this repository. Therefore, it is recommended that you include the mapping between genre ID values and their corresponding titles in your code using this file.
+
+
+
+## Project Deliverables
+
+- A fully functional React app that:
+
+  - Fetches and displays podcast data.
+  - Allows live searching, sorting, filtering, and pagination.
+  - Maintains consistent state across all UI interactions.
+ 
+
+
+- **Clean Codebase** with:
+
+  - Reusable, modular components.
+  - Clear and consistent formatting across all files.
+  - JSDoc comments for functions/modules.
+
+- **README.md** with:
+
+  - Project overview and purpose.
+  - Setup and usage instructions.
+  - Descriptions of key features (search, filter, sort, pagination).
+
+- **Version Control (GitHub)**:
+  - Clear, meaningful commit messages.
+  - Incremental commits reflecting development progress.
+
+## Success Criteria
+
+- No console errors or broken UI on load.
+- All features work correctly and together without losing state.
+- Clean, maintainable codebase with documentation.
+- A polished user experience with responsive layout and real-time updates.
+
+## Install
+```bash
+git clone <repo>
+cd my-podcast-app
+npm install
+npm run dev
+# or `yarn` / `npm` depending on your setup
 
 ---
-
-## Technical Requirements
-
-- Use **React functional components**
-- Use the **Fetch API**
-- Use `useEffect()` to fetch data once on mount
-- Use `useState()` to manage podcast data
-- Use `.map()` to dynamically render PodcastPreviewCard components
-- Format dates using `date-fns` or a custom formatter
-
----
-
-## Responsiveness Requirements
-
-- Must look good on:
-  - Desktop (≥1200px)
-  - Tablet (~768px)
-  - Mobile (~375px)
-- Use **CSS Grid** or **Flexbox**
-- Media queries or frameworks like **Tailwind CSS** are allowed
-
----
-
-## Deliverables
-
-- **Functional React Application**
-
-  - A working React app that fetches podcast data from an external API on initial load.
-  - The app renders a grid of podcast previews using reusable components.
-
-- **Loading, Error, and Empty States**
-
-  - A clear loading indicator is displayed while fetching data.
-  - Meaningful error or empty state messaging is shown if the fetch fails or returns no results.
-
-- **Podcast Preview Card Component**
-
-  - A reusable component that displays:
-    - Podcast image
-    - Podcast title
-    - Number of seasons
-    - Genre tags
-    - Last updated date in a human-readable format (e.g., "3 days ago")
-
-- **Responsive Layout**
-
-  - Grid layout that adapts to mobile, tablet, and desktop screen sizes using responsive design principles.
-
-- **Codebase**
-  - Clean, modular code with clearly separated components.
-  - All major functions and modules documented with **JSDoc** comments.
-  - Consistent formatting across JavaScript, JSX, HTML, and CSS files.
