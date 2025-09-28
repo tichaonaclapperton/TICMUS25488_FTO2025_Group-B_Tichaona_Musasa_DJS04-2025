@@ -9,20 +9,52 @@ import SortDropdown from "./utilities/SortDropdown";
 import SearchBar from "./components/SearchBar";
 import { genres } from "./genres/data.js";
 
+/**
+ * Root component for the Podcast App.
+ * Handles fetching, state management (search, sort, filter, pagination),
+ * and coordinates rendering of child components.
+ *
+ * @component
+ * @returns {JSX.Element} The Podcast App UI
+ */
+
 export default function App() {
+	/** @type {[Array, Function]} Podcasts data after fetching and normalisation */
 	const [podcasts, setPodcasts] = useState([]);
+
+	/** @type {[boolean, Function]} Loading state for API fetch */
 	const [loading, setLoading] = useState(true);
+
+	/** @type {[string|null, Function]} Error message if fetch fails */
 	const [error, setError] = useState(null);
+
+	/** @type {[Object|null, Function]} Currently selected podcast for details modal */
 	const [selected, setSelected] = useState(null);
 
-	// utilities
+	// --------- Utilities ---------
+
+	/** @type {[string, Function]} Current search query */
 	const [searchTerm, setSearchTerm] = useState("");
+
+	/** @type {[string, Function]} Currently selected genre filter */
 	const [selectedGenre, setSelectedGenre] = useState("");
-	const [sortOrder, setSortOrder] = useState("newest"); // newest | az | za
+
+	/** @type {[string, Function]} Sorting order: 'newest' | 'az' | 'za' */
+	const [sortOrder, setSortOrder] = useState("newest");
+
+	/** @type {[number, Function]} Current pagination page */
 	const [page, setPage] = useState(1);
+
+	/** @constant {number} Number of podcasts displayed per page */
 	const itemsPerPage = 12;
 
+	/** @constant {string} API endpoint URL */
 	const API_URL = "https://podcast-api.netlify.app/";
+
+	/**
+	 * Fetch podcasts from API and normalise data structure.
+	 * Runs once on mount, cancels request if component unmounts.
+	 */
 
 	useEffect(() => {
 		const controller = new AbortController();
@@ -84,9 +116,10 @@ export default function App() {
 	const onCardClick = useCallback((podcast) => setSelected(podcast), []);
 	const onCloseModal = useCallback(() => setSelected(null), []);
 
-	// -----------------------------
-	// Filtering + Sorting + Pagination
-	// -----------------------------
+	/**
+	 * Filter podcasts by search term and genre.
+	 * @constant
+	 */
 	const filteredPodcasts = podcasts.filter((p) => {
 		const matchesSearch =
 			p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
