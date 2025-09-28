@@ -46,7 +46,7 @@ export default function App() {
 	const [page, setPage] = useState(1);
 
 	/** @constant {number} Number of podcasts displayed per page */
-	const itemsPerPage = 12;
+	const itemsPerPage = 8;
 
 	/** @constant {string} API endpoint URL */
 	const API_URL = "https://podcast-api.netlify.app/";
