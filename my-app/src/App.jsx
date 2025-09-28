@@ -6,7 +6,7 @@ import DetailsModal from "./components/DetailsModal";
 import GenreFilter from "./utilities/GenreFilter";
 import Pagination from "./utilities/Pagination";
 import SortDropdown from "./utilities/SortDropdown";
-import SearchBar from "./components/SearchBar";
+import SearchBar from "./utilities/SearchBar.jsx";
 import { genres } from "./genres/data.js";
 
 /**
